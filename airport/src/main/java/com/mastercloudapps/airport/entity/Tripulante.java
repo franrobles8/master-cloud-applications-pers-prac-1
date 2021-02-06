@@ -3,6 +3,7 @@ package com.mastercloudapps.airport.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Tripulante extends Trabajador {
     private String puesto;
     private String formacion;
     
-    @ManyToMany(mappedBy = "tripulantes")
+    @ManyToMany(mappedBy = "tripulantes", fetch=FetchType.EAGER)
+    @ToString.Exclude
     private List<Vuelo> vuelos;
 }

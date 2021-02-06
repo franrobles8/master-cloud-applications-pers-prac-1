@@ -3,6 +3,7 @@ package com.mastercloudapps.airport.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity(name="Avion")
 @Data
@@ -32,7 +34,8 @@ public class Avion {
 
     private Double horasVuelo;
 
-    @OneToMany(mappedBy = "revision")
+    @OneToMany(mappedBy = "avion", fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Revision> revisiones;
 
 }

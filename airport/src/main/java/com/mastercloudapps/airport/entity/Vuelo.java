@@ -46,7 +46,7 @@ public class Vuelo {
 
     private Double duracion;
 
-    @ManyToMany(cascade=CascadeType.ALL, mappedBy = "vuelos")
+    @ManyToMany(cascade=CascadeType.ALL)
     private List<Tripulante> tripulantes;
 
 }

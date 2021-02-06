@@ -3,7 +3,7 @@ package com.mastercloudapps.airport.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class Mecanico extends Trabajador {
     private String añoIncorporacion;
     private String formacionPrevia;
     
-    @OneToMany(mappedBy = "mecanico")
-    @JoinColumn(name="mecanico")
+    @OneToMany(mappedBy = "mecanico", fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Revision> revisiones;
 }

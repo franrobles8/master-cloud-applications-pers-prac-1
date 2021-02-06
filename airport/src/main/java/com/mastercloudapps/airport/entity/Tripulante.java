@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper=false)
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @Entity(name="Tripulante")
 public class Tripulante extends Trabajador {
     

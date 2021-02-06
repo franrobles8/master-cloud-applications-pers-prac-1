@@ -34,7 +34,7 @@ public class Avion {
 
     private Double horasVuelo;
 
-    @OneToMany(mappedBy = "avion", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "avion")
     @ToString.Exclude
     private List<Revision> revisiones;
 

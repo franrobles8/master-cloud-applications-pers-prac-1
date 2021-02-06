@@ -25,7 +25,7 @@ public class Tripulante extends Trabajador {
     private String puesto;
     private String formacion;
     
-    @ManyToMany(mappedBy = "tripulantes", fetch=FetchType.EAGER)
+    @ManyToMany(mappedBy = "tripulantes")
     @ToString.Exclude
     private List<Vuelo> vuelos;
 }

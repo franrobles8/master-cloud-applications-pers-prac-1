@@ -1,9 +1,12 @@
 package com.mastercloudapps.airport.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,5 +31,8 @@ public class Avion {
     private String modelo;
 
     private Double horasVuelo;
+
+    @OneToMany(mappedBy = "revision")
+    private List<Revision> revisiones;
 
 }

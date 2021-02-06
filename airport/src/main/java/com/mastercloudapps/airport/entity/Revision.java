@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class Revision {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private Avion avion;
 
     private Date fechaInicio;
@@ -33,7 +34,7 @@ public class Revision {
     
     private Double horas;
 
-    @OneToOne
+    @ManyToOne
     private Mecanico mecanico;
 
     private String tipo;

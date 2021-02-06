@@ -16,4 +16,5 @@ public class Tripulante extends Trabajador {
     
     private String puesto;
     private String formacion;
+    
 }

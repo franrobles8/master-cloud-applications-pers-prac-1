@@ -1,10 +1,12 @@
 package com.mastercloudapps.airport;
 
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.mastercloudapps.airport.dto.VueloCiudadFechaDTO;
 import com.mastercloudapps.airport.entity.Aeropuerto;
 import com.mastercloudapps.airport.entity.Avion;
 import com.mastercloudapps.airport.entity.Mecanico;
@@ -25,22 +27,27 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class DatabaseLoader implements CommandLineRunner {
 
+    @Autowired
+    MecanicoRepository mecanicoRepository;
 
-    @Autowired MecanicoRepository mecanicoRepository;
-    
-    @Autowired TripulanteRepository tripulanteRepository;
+    @Autowired
+    TripulanteRepository tripulanteRepository;
 
-    @Autowired AvionRepository avionRepository;
+    @Autowired
+    AvionRepository avionRepository;
 
-    @Autowired AeropuertoRepository aeropuertoRepository;
+    @Autowired
+    AeropuertoRepository aeropuertoRepository;
 
-    @Autowired RevisionRepository revisionRepository;
+    @Autowired
+    RevisionRepository revisionRepository;
 
-    @Autowired VueloRepository vueloRepository;
+    @Autowired
+    VueloRepository vueloRepository;
 
     @Override
     public void run(String... args) {
-        
+
         Mecanico m1 = Mecanico.builder()
             .empresa("Airbus")
             .nombre("Pepito")
@@ -70,7 +77,7 @@ public class DatabaseLoader implements CommandLineRunner {
             .ciudad("Madrid")
             .pais("España")
             .build();
-        
+
         Aeropuerto ae2 = Aeropuerto.builder()
             .codIATA("BBB")
             .nombre("LPA")
@@ -83,11 +90,10 @@ public class DatabaseLoader implements CommandLineRunner {
 
         Calendar fechaFin = Calendar.getInstance();
         fechaFin.set(2021, 0, 12);
-    
+
         Revision r1 = Revision.builder()
             .avion(av1)
-            .fechaInicio(fechaInicio.getTime())
-            .fechaFin(fechaFin.getTime())
+            .fechaInicio(fechaInicio.getTime()).fechaFin(fechaFin.getTime())
             .horas(2.0)
             .mecanico(m1)
             .tipo("Reparacion")
@@ -101,27 +107,25 @@ public class DatabaseLoader implements CommandLineRunner {
             .avion(av1)
             .origen(ae1)
             .destino(ae2)
-            .fechaHora(new Date(System.currentTimeMillis() - 5000000))
-            .duracion(2.5)
-            //.tripulantes(Arrays.asList(t1))
+            .fechaHora(new Date(System.currentTimeMillis() - 5000000)).duracion(2.5)
+            // .tripulantes(Arrays.asList(t1))
             .build();
-            
 
         mecanicoRepository.save(m1);
         tripulanteRepository.save(t1);
         avionRepository.save(av1);
         aeropuertoRepository.save(ae1);
         aeropuertoRepository.save(ae2);
-        revisionRepository.save(r1);
         vueloRepository.save(v1);
+        revisionRepository.save(r1);
 
         List<Mecanico> mecanicos = mecanicoRepository.findAll();
         List<Tripulante> tripulantes = tripulanteRepository.findAll();
         List<Avion> aviones = avionRepository.findAll();
         List<Aeropuerto> aeropuertos = aeropuertoRepository.findAll();
-        List<Revision> revisiones = revisionRepository.findAll();
         List<Vuelo> vuelos = vueloRepository.findAll();
-        
+        List<Revision> revisiones = revisionRepository.findAll();
+
         muestraDatos("Mecanicos: ", mecanicos);
         muestraDatos("Tripulantes: ", tripulantes);
         muestraDatos("Aviones: ", aviones);
@@ -129,13 +133,24 @@ public class DatabaseLoader implements CommandLineRunner {
         muestraDatos("Vuelos: ", vuelos);
         muestraDatos("Revisiones: ", revisiones);
 
+        try {
+            this.muestraVuelosCiudadYFecha();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
-  
+
     private static void muestraDatos(String title, List datos) {
         System.out.println(title);
         for (Object p : datos) {
             System.out.println(p);
         }
         System.out.println("--------");
+    }
+
+    private void muestraVuelosCiudadYFecha() throws ParseException {
+        List<VueloCiudadFechaDTO> vuelos = vueloRepository.findVuelosByCiudadDestinoAndFechaOrderedByHour("Las Palmas", new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-06"));
+        muestraDatos("Vuelos por ciudad de destino y fecha ordenados por hora: ", vuelos);
     }
 }

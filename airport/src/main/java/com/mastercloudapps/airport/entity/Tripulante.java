@@ -1,6 +1,9 @@
 package com.mastercloudapps.airport.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +24,6 @@ public class Tripulante extends Trabajador {
     private String puesto;
     private String formacion;
     
+    @ManyToMany(mappedBy = "tripulantes")
+    private List<Vuelo> vuelos;
 }

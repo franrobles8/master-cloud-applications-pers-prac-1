@@ -1,6 +1,11 @@
 package com.mastercloudapps.airport.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,5 +24,9 @@ import lombok.experimental.SuperBuilder;
 public class Mecanico extends Trabajador {
 
     private String añoIncorporacion;
-    private String formacionPrevia;    
+    private String formacionPrevia;
+    
+    @OneToMany(mappedBy = "mecanico")
+    @JoinColumn(name="mecanico")
+    private List<Revision> revisiones;
 }

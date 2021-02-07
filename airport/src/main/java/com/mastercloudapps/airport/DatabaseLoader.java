@@ -134,7 +134,7 @@ public class DatabaseLoader implements CommandLineRunner {
         muestraDatos("Revisiones: ", revisiones);
 
         try {
-            this.muestraVuelosCiudadYFecha();
+            this.muestraVuelosCiudadDestinoYFecha("Las Palmas", new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-07"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -142,15 +142,16 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     private static void muestraDatos(String title, List datos) {
-        System.out.println(title);
+        System.out.println("\n\n\n--------");
+        System.out.println(title + "\n\n");
         for (Object p : datos) {
             System.out.println(p);
         }
         System.out.println("--------");
     }
 
-    private void muestraVuelosCiudadYFecha() throws ParseException {
-        List<VueloCiudadFechaDTO> vuelos = vueloRepository.findVuelosByCiudadDestinoAndFechaOrderedByHour("Las Palmas", new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-06"));
+    private void muestraVuelosCiudadDestinoYFecha(String ciudadDestino, Date fecha) {
+        List<VueloCiudadFechaDTO> vuelos = vueloRepository.findVuelosByCiudadDestinoAndFechaOrderedByHour(ciudadDestino, fecha);
         muestraDatos("Vuelos por ciudad de destino y fecha ordenados por hora: ", vuelos);
     }
 }

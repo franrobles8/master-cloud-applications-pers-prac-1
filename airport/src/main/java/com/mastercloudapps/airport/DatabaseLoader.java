@@ -2,6 +2,7 @@ package com.mastercloudapps.airport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -71,6 +72,14 @@ public class DatabaseLoader implements CommandLineRunner {
             .apellidos("Me lavo")
             .puesto("Capitan del mundo")
             .formacion("Pagada por papa")
+            .build();
+
+        Tripulante t2 = Tripulante.builder()
+            .empresa("Iberia")
+            .nombre("Johnson")
+            .apellidos("Jhonensen")
+            .puesto("Azafato")
+            .formacion("Curso de azafato")
             .build();
 
         Avion av1 = Avion.builder()
@@ -152,6 +161,7 @@ public class DatabaseLoader implements CommandLineRunner {
             .destino(ae2)
             .fechaHora(new Date(System.currentTimeMillis() - 5000000))
             .duracion(2.5)
+            .tripulantes(Arrays.asList(t1))
             .build();
         
         Vuelo v2 = Vuelo.builder()
@@ -162,6 +172,7 @@ public class DatabaseLoader implements CommandLineRunner {
             .destino(ae3)
             .fechaHora(new Date(System.currentTimeMillis() - 8000000))
             .duracion(9.0)
+            .tripulantes(Arrays.asList(t2))
             .build();
 
         Vuelo v3 = Vuelo.builder()
@@ -172,11 +183,13 @@ public class DatabaseLoader implements CommandLineRunner {
             .destino(ae2)
             .fechaHora(new Date(System.currentTimeMillis() - 2000000))
             .duracion(8.7)
+            .tripulantes(Arrays.asList(t1, t2))
             .build();
 
         mecanicoRepository.save(m1);
         mecanicoRepository.save(m2);
         tripulanteRepository.save(t1);
+        tripulanteRepository.save(t2);
         avionRepository.save(av1);
         avionRepository.save(av2);
         aeropuertoRepository.save(ae1);

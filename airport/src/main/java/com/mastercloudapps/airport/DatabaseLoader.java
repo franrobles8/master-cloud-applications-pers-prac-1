@@ -68,7 +68,14 @@ public class DatabaseLoader implements CommandLineRunner {
             .matricula("00000AAA")
             .fabricante("Airbus")
             .modelo("775")
-            .horasVuelo(25.6)
+            .horasVuelo(1500.0)
+            .build();
+
+        Avion av2 = Avion.builder()
+            .matricula("1111BBB")
+            .fabricante("Boeing")
+            .modelo("737")
+            .horasVuelo(856.5)
             .build();
 
         Aeropuerto ae1 = Aeropuerto.builder()
@@ -83,6 +90,13 @@ public class DatabaseLoader implements CommandLineRunner {
             .nombre("LPA")
             .ciudad("Las Palmas")
             .pais("España")
+            .build();
+        
+        Aeropuerto ae3 = Aeropuerto.builder()
+            .codIATA("CCC")
+            .nombre("JFK")
+            .ciudad("Nueva York")
+            .pais("USA")
             .build();
 
         Calendar fechaInicio = Calendar.getInstance();
@@ -107,16 +121,40 @@ public class DatabaseLoader implements CommandLineRunner {
             .avion(av1)
             .origen(ae1)
             .destino(ae2)
-            .fechaHora(new Date(System.currentTimeMillis() - 5000000)).duracion(2.5)
-            // .tripulantes(Arrays.asList(t1))
+            .fechaHora(new Date(System.currentTimeMillis() - 5000000))
+            .duracion(2.5)
+            .build();
+        
+        Vuelo v2 = Vuelo.builder()
+            .codVuelo("UX3345")
+            .compania("Air Europa")
+            .avion(av2)
+            .origen(ae1)
+            .destino(ae3)
+            .fechaHora(new Date(System.currentTimeMillis() - 8000000))
+            .duracion(9.0)
+            .build();
+
+        Vuelo v3 = Vuelo.builder()
+            .codVuelo("UX3346")
+            .compania("Air Europa")
+            .avion(av2)
+            .origen(ae3)
+            .destino(ae2)
+            .fechaHora(new Date(System.currentTimeMillis() - 2000000))
+            .duracion(8.7)
             .build();
 
         mecanicoRepository.save(m1);
         tripulanteRepository.save(t1);
         avionRepository.save(av1);
+        avionRepository.save(av2);
         aeropuertoRepository.save(ae1);
         aeropuertoRepository.save(ae2);
+        aeropuertoRepository.save(ae3);
         vueloRepository.save(v1);
+        vueloRepository.save(v2);
+        vueloRepository.save(v3);
         revisionRepository.save(r1);
 
         List<Mecanico> mecanicos = mecanicoRepository.findAll();
@@ -132,6 +170,9 @@ public class DatabaseLoader implements CommandLineRunner {
         muestraDatos("Aeropuertos: ", aeropuertos);
         muestraDatos("Vuelos: ", vuelos);
         muestraDatos("Revisiones: ", revisiones);
+
+
+        // Custom queries
 
         try {
             this.muestraVuelosCiudadDestinoYFecha("Las Palmas", new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-07"));

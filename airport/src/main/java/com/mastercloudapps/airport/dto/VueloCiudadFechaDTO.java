@@ -31,6 +31,5 @@ public class VueloCiudadFechaDTO {
     private Date fechaHora;
 
     private Double duracion;
-
-    // private List<Tripulante> tripulantes;
+    
 }

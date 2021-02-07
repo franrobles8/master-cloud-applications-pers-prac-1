@@ -48,7 +48,7 @@ public class Vuelo {
 
     private Double duracion;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<Tripulante> tripulantes;
 
 }

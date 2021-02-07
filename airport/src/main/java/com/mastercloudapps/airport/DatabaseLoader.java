@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.mastercloudapps.airport.dto.AvionRevisionMecanicoDTO;
 import com.mastercloudapps.airport.dto.VueloCiudadFechaDTO;
 import com.mastercloudapps.airport.entity.Aeropuerto;
 import com.mastercloudapps.airport.entity.Avion;
@@ -54,6 +55,14 @@ public class DatabaseLoader implements CommandLineRunner {
             .apellidos("El de los palotes")
             .añoIncorporacion("2021")
             .formacionPrevia("Universidad de la calle")
+            .build();
+        
+        Mecanico m2 = Mecanico.builder()
+            .empresa("Airbus")
+            .nombre("Juanito")
+            .apellidos("De la Vega")
+            .añoIncorporacion("2020")
+            .formacionPrevia("FP2")
             .build();
 
         Tripulante t1 = Tripulante.builder()
@@ -115,6 +124,26 @@ public class DatabaseLoader implements CommandLineRunner {
             .aeropuerto(ae1)
             .build();
 
+        Revision r2 = Revision.builder()
+            .avion(av1)
+            .fechaInicio(fechaInicio.getTime()).fechaFin(fechaFin.getTime())
+            .horas(3.0)
+            .mecanico(m2)
+            .tipo("Reparacion")
+            .descripcion("Ajuste de turbina")
+            .aeropuerto(ae1)
+            .build();
+
+        Revision r3 = Revision.builder()
+            .avion(av2)
+            .fechaInicio(fechaInicio.getTime()).fechaFin(fechaFin.getTime())
+            .horas(1.0)
+            .mecanico(m2)
+            .tipo("Revision")
+            .descripcion("Revision de ruedas")
+            .aeropuerto(ae2)
+            .build();
+
         Vuelo v1 = Vuelo.builder()
             .codVuelo("IB3343")
             .compania("Iberia")
@@ -146,6 +175,7 @@ public class DatabaseLoader implements CommandLineRunner {
             .build();
 
         mecanicoRepository.save(m1);
+        mecanicoRepository.save(m2);
         tripulanteRepository.save(t1);
         avionRepository.save(av1);
         avionRepository.save(av2);
@@ -156,6 +186,8 @@ public class DatabaseLoader implements CommandLineRunner {
         vueloRepository.save(v2);
         vueloRepository.save(v3);
         revisionRepository.save(r1);
+        revisionRepository.save(r2);
+        revisionRepository.save(r3);
 
         List<Mecanico> mecanicos = mecanicoRepository.findAll();
         List<Tripulante> tripulantes = tripulanteRepository.findAll();
@@ -180,6 +212,8 @@ public class DatabaseLoader implements CommandLineRunner {
             e.printStackTrace();
         }
 
+        this.muestraMecanicosAviones();
+
     }
 
     private static void muestraDatos(String title, List datos) {
@@ -194,5 +228,10 @@ public class DatabaseLoader implements CommandLineRunner {
     private void muestraVuelosCiudadDestinoYFecha(String ciudadDestino, Date fecha) {
         List<VueloCiudadFechaDTO> vuelos = vueloRepository.findVuelosByCiudadDestinoAndFechaOrderedByHour(ciudadDestino, fecha);
         muestraDatos("Vuelos por ciudad de destino y fecha ordenados por hora: ", vuelos);
+    }
+
+    private void muestraMecanicosAviones() {
+        List<AvionRevisionMecanicoDTO> mecanicosAviones = avionRepository.findAllAvionesByMecanicosAndRevisiones();
+        muestraDatos("Nombre de mecanicos que han revisado cada avion: ", mecanicosAviones);
     }
 }

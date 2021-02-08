@@ -2,9 +2,9 @@ package com.mastercloudapps.airport.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +25,9 @@ public class Tripulante extends Trabajador {
     private String puesto;
     private String formacion;
     
-    @ManyToMany(mappedBy = "tripulantes")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tripulante", orphanRemoval = true)
     @ToString.Exclude
-    private List<Vuelo> vuelos;
+    private List<VueloTripulante> vuelos;
+
+   
 }

@@ -23,7 +23,7 @@ public class Trabajador {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String cod_empleado;
+    private String codEmpleado;
     
     private String nombre;
     

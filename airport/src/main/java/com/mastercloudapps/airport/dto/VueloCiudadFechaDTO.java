@@ -1,11 +1,9 @@
 package com.mastercloudapps.airport.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import com.mastercloudapps.airport.entity.Aeropuerto;
 import com.mastercloudapps.airport.entity.Avion;
-import com.mastercloudapps.airport.entity.Tripulante;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

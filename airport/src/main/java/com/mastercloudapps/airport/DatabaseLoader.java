@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.mastercloudapps.airport.dto.AvionRevisionMecanicoDTO;
+import com.mastercloudapps.airport.dto.TripulanteCiudadFechaDTO;
+import com.mastercloudapps.airport.dto.TripulanteTiempoVueloAcumuladosDTO;
 import com.mastercloudapps.airport.dto.VueloCiudadFechaDTO;
 import com.mastercloudapps.airport.entity.Aeropuerto;
 import com.mastercloudapps.airport.entity.Avion;
@@ -15,6 +17,7 @@ import com.mastercloudapps.airport.entity.Mecanico;
 import com.mastercloudapps.airport.entity.Revision;
 import com.mastercloudapps.airport.entity.Tripulante;
 import com.mastercloudapps.airport.entity.Vuelo;
+import com.mastercloudapps.airport.entity.VueloTripulante;
 import com.mastercloudapps.airport.repository.AeropuertoRepository;
 import com.mastercloudapps.airport.repository.AvionRepository;
 import com.mastercloudapps.airport.repository.MecanicoRepository;
@@ -161,8 +164,8 @@ public class DatabaseLoader implements CommandLineRunner {
             .destino(ae2)
             .fechaHora(new Date(System.currentTimeMillis() - 5000000))
             .duracion(2.5)
-            .tripulantes(Arrays.asList(t1))
             .build();
+        v1.setTripulantes(Arrays.asList(VueloTripulante.builder().tripulante(t1).vuelo(v1).build()));
         
         Vuelo v2 = Vuelo.builder()
             .codVuelo("UX3345")
@@ -172,24 +175,13 @@ public class DatabaseLoader implements CommandLineRunner {
             .destino(ae3)
             .fechaHora(new Date(System.currentTimeMillis() - 8000000))
             .duracion(9.0)
-            .tripulantes(Arrays.asList(t2))
             .build();
+        v2.setTripulantes(Arrays.asList(VueloTripulante.builder().tripulante(t2).vuelo(v2).build()));
 
-        Vuelo v3 = Vuelo.builder()
-            .codVuelo("UX3346")
-            .compania("Air Europa")
-            .avion(av2)
-            .origen(ae3)
-            .destino(ae2)
-            .fechaHora(new Date(System.currentTimeMillis() - 2000000))
-            .duracion(8.7)
-            .tripulantes(Arrays.asList(t1, t2))
-            .build();
+        
 
         mecanicoRepository.save(m1);
         mecanicoRepository.save(m2);
-        tripulanteRepository.save(t1);
-        tripulanteRepository.save(t2);
         avionRepository.save(av1);
         avionRepository.save(av2);
         aeropuertoRepository.save(ae1);
@@ -197,7 +189,6 @@ public class DatabaseLoader implements CommandLineRunner {
         aeropuertoRepository.save(ae3);
         vueloRepository.save(v1);
         vueloRepository.save(v2);
-        vueloRepository.save(v3);
         revisionRepository.save(r1);
         revisionRepository.save(r2);
         revisionRepository.save(r3);
@@ -226,7 +217,20 @@ public class DatabaseLoader implements CommandLineRunner {
         }
 
         this.muestraMecanicosAviones();
+        this.muestraTripulantesCiudadHoraDespegue();
+        this.muestraTripulantesTiempoVuelosAcumulados();
 
+    }
+
+    private void muestraTripulantesCiudadHoraDespegue() {
+        List<Tripulante> tripulantes = this.tripulanteRepository.findAll();
+        List<TripulanteCiudadFechaDTO> tripulantesCiudadFecha = tripulanteRepository.findTripulanteByCodEmpleado(tripulantes.get(0).getCodEmpleado());
+        muestraDatos("Tripulantes con ciudades de despegue y fecha: ", tripulantesCiudadFecha);
+    }
+
+    private void muestraTripulantesTiempoVuelosAcumulados() {
+        List<TripulanteTiempoVueloAcumuladosDTO> tripulantesTiempoVuelosAcumulados = tripulanteRepository.findTripulanteTiempoVuelosAcumulados();
+        muestraDatos("Tripulantes con tiempo y vuelos acumulados: ", tripulantesTiempoVuelosAcumulados);
     }
 
     private static void muestraDatos(String title, List datos) {
